@@ -25,13 +25,14 @@ export default function ProductDetails() {
     const { toggleWishlist, isInWishlist } = useWishlist();
 
     const fetchProduct = async () => {
-        setProduct(dummyProducts.find((product) => product._id === id) as any);
+        const found: any = dummyProducts.find((product) => product._id === id);
+        setProduct(found ?? null);
         setLoading(false);
     };
 
     useEffect(() => {
         fetchProduct();
-    }, []);
+    }, [id]);
 
     if (loading) {
         return (
@@ -114,8 +115,8 @@ export default function ProductDetails() {
                         <Text className="text-2xl font-bold flex-1 mr-4 text-primary">{product.name}</Text>
                         <View className="flex-row mb-2 items-start justify-between">
                             <Ionicons name="star" size={14} color="#FFD700" />
-                            <Text className="ml-1 font-bold text-sm">4.6</Text>
-                            <Text className="ml-1 text-secondary text-xs">(85)</Text>
+                            <Text className="ml-1 font-bold text-sm">{product.ratings.average.toFixed(1)}</Text>
+                            <Text className="ml-1 text-secondary text-xs">({product.ratings.count})</Text>
                         </View>
                     </View>
 
