@@ -1,98 +1,111 @@
-import { Image } from 'expo-image';
-import { Platform, StyleSheet } from 'react-native';
+import { BANNERS, dummyProducts } from '@/assets/assets';
+import { CATEGORIES } from '@/assets/constants';
+import { Product } from '@/assets/constants/types';
+import CategoryItem from '@/components/CategoryItem';
+import Header from '@/components/Header';
+import ProductCard from '@/components/ProductCard';
+import { useRouter } from 'expo-router';
+import React, { useEffect, useState } from 'react';
+import { ActivityIndicator, Dimensions, Image, ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { HelloWave } from '@/components/hello-wave';
-import ParallaxScrollView from '@/components/parallax-scroll-view';
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
-import { Link } from 'expo-router';
+const { width } = Dimensions.get("window")
 
-export default function HomeScreen() {
+export default function Home() {
+
+  const router = useRouter();
+  const [activeBannerIndex, setActiveBannerIndex] = useState(0);
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  const categories = [{ id: 'all', name: 'All', icon: "grid" }, ...CATEGORIES];
+
+  const fetchProducts = async () => {
+    setProducts(dummyProducts);
+    setLoading(false);
+  }
+
+  useEffect(() => {
+    fetchProducts();
+  })
+
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Hi guys</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({
-              ios: 'cmd + d',
-              android: 'cmd + m',
-              web: 'F12',
-            })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <Link href="/modal">
-          <Link.Trigger>
-            <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-          </Link.Trigger>
-          <Link.Preview />
-          <Link.Menu>
-            <Link.MenuAction title="Action" icon="cube" onPress={() => alert('Action pressed')} />
-            <Link.MenuAction
-              title="Share"
-              icon="square.and.arrow.up"
-              onPress={() => alert('Share pressed')}
-            />
-            <Link.Menu title="More" icon="ellipsis">
-              <Link.MenuAction
-                title="Delete"
-                icon="trash"
-                destructive
-                onPress={() => alert('Delete pressed')}
-              />
-            </Link.Menu>
-          </Link.Menu>
-        </Link>
+    <SafeAreaView className='flex-1' edges={['top']}>
+      <Header title='Forever' showMenu showCart showLogo />
+      <ScrollView className='flex-1 px-4' showsVerticalScrollIndicator={false}>
+        {/* Banner */}
+        <View className='mb-6'>
+          <ScrollView horizontal pagingEnabled
+            showsHorizontalScrollIndicator={false}
+            className='w-full h-48 rounded-xl' scrollEventThrottle={16}
+            onScroll={(e) => {
+              const slide = Math.ceil(e.nativeEvent.contentOffset.x / e.nativeEvent.layoutMeasurement.width)
+              if (slide !== activeBannerIndex) {
+                setActiveBannerIndex(slide);
+              }
+            }}>
+            {BANNERS.map((banner, index) => (
+              <View key={index} className='relative w-full h-48 bg-gray-200 overflow-hidden' style={{ width: width - 32 }}>
+                <Image source={{ uri: banner.image }}
+                  className='w-full h-full' resizeMode='cover' />
+                <View className='absolute bottom-4 left-4 z-10'>
+                  <Text className='text-white text-2xl font-bold'>{banner.title}</Text>
+                  <Text className='text-white text-sm font-medium'>{banner.subtitle}</Text>
+                  <TouchableOpacity className='mt-3 bg-white px-4 py-2 rounded-full self-start'>
+                    <Text className='text-primary font-bold text text-xs'>GET NOW</Text>
+                  </TouchableOpacity>
+                </View>
+                <View className='absolute inset-0 bg-black/40' />
+              </View>
+            ))}
+          </ScrollView>
+          {/* Pagination Dots */}
+          <View className='flex-row justify-center mt-3 gap-2'>
+            {BANNERS.map((_, index) => (
+              <View key={index} className={`h-2 rounded-full ${index === activeBannerIndex ? 'w-6 bg-primary' : 'w-2 bg-gray-300'}`} />
+            ))}
+          </View>
+        </View>
+        {/* Categories */}
+        <View className='mb-6'>
+          <View className='flex-row justify-between items-center mb-4'>
+            <Text className='text-xl font-bold text-primary'> Categories</Text>
+          </View>
+          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+            {categories.map((cat: any) => (
+              <CategoryItem key={cat.id} item={cat} isSelected={false} onPress={() => router.push({ pathname: "/shop", params: { category: cat.id === 'all' ? '' : cat.name } })} />
+            ))}
+          </ScrollView>
+        </View>
 
-        <ThemedText>
-          {`Tap the Explore tab to learn more about what's included in this starter app.`}
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          {`When you're ready, run `}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
-  );
+        {/* Popular products */}
+        <View className='mb-8'>
+          <View className='flex-row justify-between items-center mb-4'>
+            <Text className='text-xl font-bold text-primarya'>Popular</Text>
+            <TouchableOpacity onPress={() => router.push('/shop')}>
+              <Text className='text-secondary text-sm'>See All</Text>
+            </TouchableOpacity>
+          </View>
+          {loading ? (
+            <ActivityIndicator size='large' />
+          ) : (
+            <View className='flex-row flex-wrap justify-between'>
+              {products.slice(0, 4).map((product) => (
+                <ProductCard key={product._id} product={product} />
+              ))}
+            </View>
+          )}
+        </View>
+
+
+        <View className='bg-gray-100 p-6 rounded-2xl mb-20 items-center'>
+          <Text className='text-2xl font-bold text-primary mb-2 text-center'>Join in Revolution</Text>
+          <Text className='text-secondary text-center mb-4'>Subscribe to our newsletter and get 10% off your first purchase.</Text>
+          <TouchableOpacity className='bg-primary w-4/5 py-3 rounded-full items-center'>
+            <Text className='text-white font-medium text-base'>Subscribe Now</Text>
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
+    </SafeAreaView>
+  )
 }
-
-const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-  },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
-  },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
-  },
-});
