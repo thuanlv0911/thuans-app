@@ -11,7 +11,7 @@ export default function ProductCard({ product }: ProductCardProps) {
         <Link href={`/product/${product._id}`} asChild>
             <TouchableOpacity className='w-[48%] mb-4 bg-white rounded-lg overflow-hidden'>
                 <View className='relative h-56 w-full bg-gray-100'>
-                    <Image source={{ uri: product.images[0] }}
+                    <Image source={{ uri: product.images?.[0] ?? '' }}
                         className='w-full h-full' resizeMode='cover' />
 
                     <TouchableOpacity className='absolute top-2 right-2 z-10 shadow-sm bg-white rounded-full p-2' onPress={(e) => { e.stopPropagation(); }}>
@@ -28,10 +28,10 @@ export default function ProductCard({ product }: ProductCardProps) {
 
                 {/* Product in4 */}
                 <View className='p-3'>
-                    <View>
+                    <View className='flex-row items-center'>
                         <Ionicons name='star' size={14} color='#FFD700' />
                         <Text className='text-secondary text-xs ml-1'>
-                            4.6
+                            {product.ratings.average.toFixed(1)}
                         </Text>
                     </View>
                     <Text className='text-primary font-medium text-sm mb-1' numberOfLines={1}>{product.name}</Text>
