@@ -1,9 +1,9 @@
+import { dummyProducts } from "@/assets/assets";
+import { COLORS } from "@/assets/constants";
+import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import React, { useEffect, useState } from "react";
-import { ScrollView, Text, TouchableOpacity, View, ActivityIndicator, RefreshControl, Image, Alert } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
-import { COLORS } from "@/constants";
-import { dummyProducts } from "@/assets/assets";
+import { ActivityIndicator, Alert, Image, RefreshControl, ScrollView, Text, TouchableOpacity, View } from "react-native";
 
 export default function AdminProducts() {
     const router = useRouter();

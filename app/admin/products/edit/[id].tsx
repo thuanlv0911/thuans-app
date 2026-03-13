@@ -1,11 +1,11 @@
-import { useLocalSearchParams, useRouter } from "expo-router";
-import React, { useEffect, useState } from "react";
-import { ScrollView, Text, TextInput, TouchableOpacity, View, Switch, Image, ActivityIndicator, Platform, Modal, FlatList, TouchableWithoutFeedback } from "react-native";
-import Toast from 'react-native-toast-message';
-import { COLORS, CATEGORIES } from "@/constants";
+import { dummyProducts } from "@/assets/assets";
+import { CATEGORIES, COLORS } from "@/assets/constants";
 import { Ionicons } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
-import { dummyProducts } from "@/assets/assets";
+import { useLocalSearchParams, useRouter } from "expo-router";
+import React, { useEffect, useState } from "react";
+import { ActivityIndicator, FlatList, Image, Modal, Platform, ScrollView, Switch, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, View } from "react-native";
+import Toast from 'react-native-toast-message';
 
 export default function EditProduct() {
     const { id } = useLocalSearchParams();

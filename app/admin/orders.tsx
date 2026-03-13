@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
-import { ScrollView, Text, TouchableOpacity, View, ActivityIndicator, RefreshControl, Alert, Modal, TouchableWithoutFeedback, FlatList } from "react-native";
-import { COLORS, getStatusColor } from "@/constants";
-import { Ionicons } from "@expo/vector-icons";
 import { dummyOrders, dummyUser } from "@/assets/assets";
+import { COLORS, getStatusColor } from "@/assets/constants";
+import { Ionicons } from "@expo/vector-icons";
+import React, { useEffect, useState } from "react";
+import { ActivityIndicator, FlatList, Modal, RefreshControl, ScrollView, Text, TouchableOpacity, TouchableWithoutFeedback, View } from "react-native";
 
 export default function AdminOrders() {
     const [loading, setLoading] = useState(true);
