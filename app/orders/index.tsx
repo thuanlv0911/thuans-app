@@ -1,12 +1,12 @@
+import { dummyOrders, formatDate } from "@/assets/assets";
+import { COLORS, getStatusColor } from "@/assets/constants";
+import type { Order } from "@/assets/constants/types";
+import Header from "@/components/Header";
+import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import React, { useEffect, useState } from "react";
-import { FlatList, Text, TouchableOpacity, View, ActivityIndicator, ScrollView, Image } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
+import { ActivityIndicator, FlatList, Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import Header from "@/components/Header";
-import { COLORS, getStatusColor } from "@/constants";
-import type { Order } from "@/constants/types";
-import { dummyOrders, formatDate } from "@/assets/assets";
 
 export default function Orders() {
     const router = useRouter();

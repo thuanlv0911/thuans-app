@@ -1,10 +1,9 @@
-import React, { useState } from "react";
-import { ScrollView, Text, TextInput, TouchableOpacity, View, Switch, Image, ActivityIndicator, Modal, FlatList, TouchableWithoutFeedback, Platform, } from "react-native";
-import Toast from 'react-native-toast-message';
-import { COLORS } from "@/constants";
+import { CATEGORIES, COLORS } from "@/assets/constants";
 import { Ionicons } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
-import { CATEGORIES } from "@/constants";
+import React, { useState } from "react";
+import { ActivityIndicator, FlatList, Image, Modal, ScrollView, Switch, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, View } from "react-native";
+import Toast from 'react-native-toast-message';
 
 export default function AddProduct() {
 

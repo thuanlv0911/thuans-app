@@ -1,6 +1,6 @@
-import { dummyUser } from '@/assets/assets';
 import { COLORS, PROFILE_MENU } from '@/assets/constants';
 import Header from '@/components/Header';
+import { useClerk } from '@clerk/expo';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import React from 'react';
@@ -9,15 +9,16 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function Profile() {
 
-    const { user } = { user: dummyUser }
+    const { user, signOut } = useClerk();
     const router = useRouter();
 
     const handleLogout = async () => {
+        await signOut();
         router.replace("/sign-in");
     }
     return (
         <SafeAreaView className='flex-1 bg-surface' edges={['top']}>
-            <Header title='Profile' />
+            <Header title='Profile' showMenu showCart />
             <ScrollView className='flex-1 px-4'
                 contentContainerStyle={!user ? { flex: 1, justifyContent: 'center', alignItems: 'center' } : { paddingTop: 16 }}>
                 {
