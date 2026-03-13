@@ -44,7 +44,7 @@ export default function Shop() {
 
 
     const loadMore = () => {
-        if (!loadMore && !loading && hasMore) {
+        if (!loadingMore && !loading && hasMore) {
             fetchProduct(page + 1);
         }
     }
